@@ -4,7 +4,7 @@
   "description": "3D adventure MMORPG for mac/windows/linux.",
   "main": "main.js",
   "scripts": {
-    "start": "electron",
+    "start": "electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/timurtu/adventure-game#readme",
   "devDependencies": {
-    "electron-prebuilt-compile": "^1.3.5"
+    "craftyjs": "^0.7.1"
   }
 }

@@ -2,15 +2,15 @@
  * Created by timur on 9/4/16.
  */
 
-import {app, BrowserWindow} from 'electron'
+const { app, BrowserWindow } = require('electron')
 
 let win
 
 function createWindow() {
   
-  win = new BrowserWindow({width: 800, height: 600})
+  win = new BrowserWindow({ width: 800, height: 600 })
   
-  win.loadURL(`file://${dirname}/index.html`)
+  win.loadURL(`file://${__dirname}/index.html`)
   
   win.webContents.openDevTools()
   
@@ -23,14 +23,14 @@ app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
   
-  if(process.platform !== 'darwin') {
+  if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
   
-  if(win === null) {
+  if (win === null) {
     createWindow()
   }
 })
