@@ -19,6 +19,15 @@ module.exports = {
        test: /\.js$/,
        exclude: /node_modules/,
        loader: 'babel?cacheDirectory'
+     },
+     {
+       test: /\.scss$/,
+       include: /node_modules|src/,
+       loader: 'style!css!sass'
+     },
+     {
+       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+       loader: 'url-loader?limit=100000'
      }
    ]
   }
