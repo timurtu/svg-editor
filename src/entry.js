@@ -4,7 +4,6 @@
 
 import './main.scss'
 
-
 let scene, camera, renderer
 let geometry, material, mesh
 
@@ -40,16 +39,39 @@ function init() {
   )
   
   document.body.appendChild(renderer.domElement)
+  document.addEventListener('keydown', onKeyDown, false)
   
+  function onKeyDown(event) {
+    
+    event.preventDefault()
+    
+    switch (event.key) {
+      
+      case 'ArrowRight':
+        mesh.rotation.y += 0.1
+        break
+      
+      case 'ArrowLeft':
+        mesh.rotation.y -= 0.1
+        break
+      
+      case 'ArrowUp':
+        mesh.rotation.x += 0.1
+        break
+      
+      case 'ArrowDown':
+        mesh.rotation.x -= 0.1
+        break
+      
+      default:
+        console.log(event.key)
+    }
+    
+  }
 }
 
 function animate() {
   
   requestAnimationFrame(animate)
-  
-  mesh.rotation.x += 0.01
-  mesh.rotation.y += 0.02
-  
   renderer.render(scene, camera)
-  
 }
