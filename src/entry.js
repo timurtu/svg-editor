@@ -30,13 +30,13 @@ function init() {
   mesh = new THREE.Mesh(geometry, material)
   scene.add(mesh)
   
-  const offset = 4
+  const offsetHack = 4
   
   renderer = new THREE.WebGLRenderer()
   
   renderer.setSize(
-    window.innerWidth - offset,
-    window.innerHeight - offset
+    window.innerWidth - offsetHack,
+    window.innerHeight - offsetHack
   )
   
   document.body.appendChild(renderer.domElement)
