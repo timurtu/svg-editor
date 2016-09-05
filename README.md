@@ -10,5 +10,4 @@
 - clone this repo
 - `cd` into it
 - `npm install`
-- `npm run build`
 - `npm start`

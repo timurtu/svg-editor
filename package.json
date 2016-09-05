@@ -4,8 +4,8 @@
   "description": "3D adventure MMORPG for mac/windows/linux.",
   "main": "main.js",
   "scripts": {
+    "start": "npm run build && electron main.js",
     "build": "webpack",
-    "start": "electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -4,11 +4,79 @@
 
 import './main.scss'
 
-let scene, camera, renderer
-let geometry, material, mesh
+let scene, camera, renderer, box, player, target
 
 init()
 animate()
+
+function setPosition(pos, obj) {
+  if (pos.y) {
+    obj.position.y = pos.y
+  }
+  
+  if (pos.x) {
+    obj.position.x = pos.x
+  }
+  
+  if (pos.z) {
+    obj.position.z = pos.z
+  }
+}
+
+function road(pos, length, width, color, dev) {
+  const geometry = new THREE.BoxGeometry(width, 0, length)
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    wireframe: dev
+  })
+  
+  const obj = new THREE.Mesh(geometry, material)
+  
+  setPosition(pos, obj)
+  
+  scene.add(obj)
+  return obj
+}
+
+function cube(pos, scene, size, color, dev) {
+  
+  const geometry = new THREE.BoxGeometry(size, size, size)
+  
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    wireframe: dev
+  })
+  
+  const obj = new THREE.Mesh(geometry, material)
+  
+  setPosition(pos, obj)
+  
+  scene.add(obj)
+  
+  return obj
+}
+
+function building(pos, cubeSize, size, color, dev) {
+  const numOfCubes = size / cubeSize
+  const cubes = []
+  
+  for (let i = 0; i < numOfCubes; i++) {
+    cubes.push(cube({ x: pos.x + i * cubeSize, z: pos.z, y: -200 }, scene, cubeSize, color, dev))
+    cubes.push(cube({ x: pos.x + i * cubeSize, z: pos.z }, scene, cubeSize, color, dev))
+    cubes.push(cube({ x: pos.x + i * cubeSize, z: pos.z, y: 200 }, scene, cubeSize, color, dev))
+    cubes.push(cube({ x: pos.x + i * cubeSize, z: pos.z, y: 400 }, scene, cubeSize, color, dev))
+    cubes.push(cube({ x: pos.x + i * cubeSize, z: pos.z, y: 600 }, scene, cubeSize, color, dev))
+  }
+  return cubes
+}
+
+function attack(target) {
+  if (target) {
+    
+  } else {
+    console.log('Please select a target to attack')
+  }
+}
 
 function init() {
   
@@ -19,15 +87,11 @@ function init() {
   
   camera.position.z = 1000;
   
-  geometry = new THREE.BoxGeometry(200, 200, 200)
-  
-  material = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
-    wireframe: true
-  })
-  
-  mesh = new THREE.Mesh(geometry, material)
-  scene.add(mesh)
+  box = cube({ y: -200 }, scene, 200, 'red', true)
+  player = cube({ y: -200, z: 200 }, scene, 200, 'green', true)
+  building({ y: -200, x: 4000, z: -5000 }, 200, 5000, 'blue', true)
+  building({ y: -200, x: -2000, z: -2000 }, 200, 2000, 'blue', true)
+  road({ y: -350, x: 2000, z: -3000 }, 10000, 500, 'yellow', true)
   
   const offsetHack = 4
   
@@ -38,33 +102,63 @@ function init() {
     window.innerHeight - offsetHack
   )
   
+  player.onclick = function (event) {
+    console.log(event)
+  }
+  
   document.body.appendChild(renderer.domElement)
+  
   document.addEventListener('keydown', onKeyDown, false)
   
   function onKeyDown(event) {
     
     event.preventDefault()
     
+    const speed = 100
+    
     switch (event.key) {
       
-      case 'ArrowRight':
-        mesh.rotation.y += 0.1
-        break
-      
-      case 'ArrowLeft':
-        mesh.rotation.y -= 0.1
+      case ' ':
+        attack(target)
         break
       
       case 'ArrowUp':
-        mesh.rotation.x += 0.1
+      case 'w':
+        if (player.position.z > -10800) {
+          player.position.z -= speed
+          camera.position.z -= speed / 1.1
+        }
         break
       
       case 'ArrowDown':
-        mesh.rotation.x -= 0.1
+      case 's':
+        if (player.position.z < 3200) {
+          player.position.z += speed
+          camera.position.z += speed / 1.1
+        }
+        break
+      
+      case 'ArrowLeft':
+      case 'a':
+        if (player.position.x > -10500) {
+          player.position.x -= speed
+          camera.position.x -= speed / 1.05
+        }
+        break
+      
+      case 'ArrowRight':
+      case 'd':
+        if (player.position.x < 10500) {
+          player.position.x += speed
+          camera.position.x += speed / 1.05
+        }
         break
       
       default:
         console.log(event.key)
+        console.log('x', player.position.x)
+        console.log('y', player.position.y)
+        console.log('z', player.position.z)
     }
     
   }
@@ -74,4 +168,5 @@ function animate() {
   
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
+  camera.lookAt(player)
 }
