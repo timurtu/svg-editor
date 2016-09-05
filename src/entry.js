@@ -6,6 +6,8 @@ import './main.scss'
 
 let scene, camera, renderer, box, player, target
 
+const speed = 100
+
 init()
 animate()
 
@@ -78,6 +80,16 @@ function attack(target) {
   }
 }
 
+function touchedLeft(obj1, obj2) {
+  
+  const withinContactLeft = (obj1.position.x + obj1.geometry.parameters.width >
+  obj2.position.x - obj2.geometry.parameters.width / 2 &&
+  obj1.position.x + obj1.geometry.parameters.width / 2 < obj2.position.x + obj2.geometry.parameters.width / 2)
+  const samePosZ = obj1.position.z === obj2.position.z
+  
+  return withinContactLeft && samePosZ
+}
+
 function init() {
   
   scene = new THREE.Scene()
@@ -114,8 +126,6 @@ function init() {
     
     event.preventDefault()
     
-    const speed = 100
-    
     switch (event.key) {
       
       case ' ':
@@ -148,6 +158,10 @@ function init() {
       
       case 'ArrowRight':
       case 'd':
+        if (touchedLeft(player, box)) {
+          return
+        }
+        
         if (player.position.x < 10500) {
           player.position.x += speed
           camera.position.x += speed / 1.05
@@ -165,7 +179,6 @@ function init() {
 }
 
 function animate() {
-  
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
   camera.lookAt(player)
