@@ -3,13 +3,14 @@
  */
 
 import dom from 'domali'
+import Stats from 'stats.js'
 import './styles/game.scss'
 import { touchedFront } from './game/bounds'
 
 
 const container = dom.create('div')
 
-let scene, camera, renderer, box, player, target
+let scene, camera, renderer, box, player, target, stats
 
 let windowHalfX = window.innerWidth / 2
 let windowHalfY = window.innerHeight / 2
@@ -137,82 +138,84 @@ function init() {
   renderer.setClearColor(0x373A3C)
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
-  
   container.appendChild(renderer.domElement)
+  
+  stats = new Stats()
+  container.push(stats.dom)
   
   document.addEventListener('keydown', onKeyDown, false)
   
-  function onKeyDown(event) {
-    
-    event.preventDefault()
-    
-    switch (event.key) {
-      
-      case ' ':
-        attack(target)
-        break
-      
-      case 'ArrowUp':
-      case 'w':
-        
-        if (touchedFront(player, box)) {
-          return
-        }
-        
-        if (player.position.z > -10800) {
-          player.position.z -= speed
-          camera.position.z -= speed / 1.1
-        }
-        
-        break
-      
-      case 'ArrowDown':
-      case 's':
-        
-        if (player.position.z < 3200) {
-          player.position.z += speed
-          camera.position.z += speed / 1.1
-        }
-        
-        break
-      
-      case 'ArrowLeft':
-      case 'a':
-        
-        // if (touchedRight(player, box)) {
-        //   return
-        // }
-        
-        if (player.position.x > -10500) {
-          player.position.x -= speed
-          camera.position.x -= speed / 1.05
-        }
-        
-        break
-      
-      case 'ArrowRight':
-      case 'd':
-        
-        // if (touchedLeft(player, box)) {
-        //   return
-        // }
-        
-        if (player.position.x < 10500) {
-          player.position.x += speed
-          camera.position.x += speed / 1.05
-        }
-        
-        break
-      
-      default:
-        console.log(event.key)
-        console.log('x', player.position.x)
-        console.log('y', player.position.y)
-        console.log('z', player.position.z)
-    }
-  }
-  
   window.addEventListener('resize', onWindowResize, false)
+}
+
+function onKeyDown(event) {
+  
+  event.preventDefault()
+  
+  switch (event.key) {
+    
+    case ' ':
+      attack(target)
+      break
+    
+    case 'ArrowUp':
+    case 'w':
+      
+      if (touchedFront(player, box)) {
+        return
+      }
+      
+      if (player.position.z > -10800) {
+        player.position.z -= speed
+        camera.position.z -= speed / 1.1
+      }
+      
+      break
+    
+    case 'ArrowDown':
+    case 's':
+      
+      if (player.position.z < 3200) {
+        player.position.z += speed
+        camera.position.z += speed / 1.1
+      }
+      
+      break
+    
+    case 'ArrowLeft':
+    case 'a':
+      
+      // if (touchedRight(player, box)) {
+      //   return
+      // }
+      
+      if (player.position.x > -10500) {
+        player.position.x -= speed
+        camera.position.x -= speed / 1.05
+      }
+      
+      break
+    
+    case 'ArrowRight':
+    case 'd':
+      
+      // if (touchedLeft(player, box)) {
+      //   return
+      // }
+      
+      if (player.position.x < 10500) {
+        player.position.x += speed
+        camera.position.x += speed / 1.05
+      }
+      
+      break
+    
+    default:
+      console.log(event.key)
+      console.log('x', player.position.x)
+      console.log('y', player.position.y)
+      console.log('z', player.position.z)
+  }
 }
 
 function onWindowResize() {
@@ -229,6 +232,11 @@ function onWindowResize() {
 function animate() {
   
   requestAnimationFrame(animate)
+  
+  stats.begin()
+  
   renderer.render(scene, camera)
   camera.lookAt(player)
+  
+  stats.end()
 }
