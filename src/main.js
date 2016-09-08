@@ -14,7 +14,7 @@ function createWindow(name = 'game', width = 960, height = 480, resizable, frame
   
   window.loadURL(`file://${__dirname}/windows/${name}.html`)
   
-  // window.webContents.openDevTools()
+  window.webContents.openDevTools()
   
   window.on('closed', () => {
     window = null
@@ -44,7 +44,7 @@ app.on('ready', () => {
   ipcMain.on('start-game', () => {
     
     login.close()
-    windows.push(createWindow('game', 2560, 1600, true, true))
+    windows.push(createWindow('game', 960, 580, true, true))
   })
   
 })
