@@ -145,9 +145,29 @@ function init() {
   
   document.addEventListener('keydown', onKeyDown, false)
   document.addEventListener('wheel', scrollCamera, false)
-  document.addEventListener('mousemove', rotateCamera, false)
-  
+  document.addEventListener('mousedown', mouseDown, false)
+  document.addEventListener('mouseup', mouseUp, false)
   window.addEventListener('resize', onWindowResize, false)
+}
+
+function mouseUp(e) {
+  
+  switch (e.button) {
+    
+    case 2:
+      document.removeEventListener('mousemove', rotateCamera, false)
+      break
+  }
+}
+
+function mouseDown(e) {
+  
+  switch (e.button) {
+    
+    case 2:
+      document.addEventListener('mousemove', rotateCamera, false)
+      break
+  }
 }
 
 // amount of mouse movements to keep track of and average mouse movement by
