@@ -15,7 +15,7 @@ let scene, camera, renderer, box, player, target, stats
 let windowHalfX = window.innerWidth / 2
 let windowHalfY = window.innerHeight / 2
 
-const speed = 25
+const speed = Math.PI * 10
 
 init()
 animate()
@@ -128,11 +128,11 @@ function init() {
   
   camera.position.z = 1000;
   
-  box = cube({ y: -200 }, scene, 200, 'red', true)
-  player = cube({ y: -200, z: 200 }, scene, 200, 'green', true)
-  building({ y: -200, x: 4000, z: -5000 }, 200, 5000, 'blue', true)
-  building({ y: -200, x: -2000, z: -2000 }, 200, 2000, 'blue', true)
-  road({ y: -350, x: 2000, z: -3000 }, 10000, 500, 'yellow', true)
+  box = cube({ y: -200 }, scene, 200, 'red', false)
+  player = cube({ y: -200, z: 200 }, scene, 200, 'green', false)
+  building({ y: -200, x: 4000, z: -5000 }, 200, 5000, 'blue', false)
+  building({ y: -200, x: -2000, z: -2000 }, 200, 2000, 'blue', false)
+  road({ y: -350, x: 2000, z: -3000 }, 10000, 500, 'yellow', false)
   
   renderer = new THREE.WebGLRenderer()
   renderer.setClearColor(0x373A3C)
@@ -167,7 +167,7 @@ function onKeyDown(event) {
       
       if (player.position.z > -10800) {
         player.position.z -= speed
-        camera.position.z -= speed / 1.1
+        camera.position.z -= speed
       }
       
       break
@@ -177,7 +177,7 @@ function onKeyDown(event) {
       
       if (player.position.z < 3200) {
         player.position.z += speed
-        camera.position.z += speed / 1.1
+        camera.position.z += speed
       }
       
       break
@@ -191,7 +191,7 @@ function onKeyDown(event) {
       
       if (player.position.x > -10500) {
         player.position.x -= speed
-        camera.position.x -= speed / 1.05
+        camera.position.x -= speed
       }
       
       break
@@ -205,7 +205,7 @@ function onKeyDown(event) {
       
       if (player.position.x < 10500) {
         player.position.x += speed
-        camera.position.x += speed / 1.05
+        camera.position.x += speed
       }
       
       break

@@ -44,7 +44,7 @@ app.on('ready', () => {
   ipcMain.on('start-game', () => {
     
     login.close()
-    windows.push(createWindow('game', 980, 600, true, true))
+    windows.push(createWindow('game', 2560, 1600, true, true))
   })
   
 })
