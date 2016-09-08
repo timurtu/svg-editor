@@ -11,7 +11,7 @@ function createWindow(name, width, height, resizable, frame) {
   
   window.loadURL(`file://${__dirname}/windows/${name}.html`)
   
-  window.webContents.openDevTools()
+  // window.webContents.openDevTools()
   
   window.on('closed', () => {
     window = null
@@ -22,7 +22,7 @@ function createWindow(name, width, height, resizable, frame) {
 
 app.on('ready', () => {
   
-  createWindow('login', 600, 400, false, true)
+  let login = createWindow('login', 600, 400, false, true)
   
   let signup
   
@@ -34,7 +34,13 @@ app.on('ready', () => {
     signup.close()
   })
   
-  // createWindow('game', 960, 540, false)
+  ipcMain.on('start-game', () => {
+    
+    login.close()
+  
+    createWindow('game', 960, 540, false)
+  })
+  
 })
 
 app.on('window-all-closed', () => {

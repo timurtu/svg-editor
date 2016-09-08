@@ -87,7 +87,7 @@ function touchedLeft(obj1, obj2) {
   obj1.position.x + obj1.geometry.parameters.width / 2 < obj2.position.x + obj2.geometry.parameters.width / 2)
   const withinContactLeftZ = (obj1.position.z + obj1.geometry.parameters.depth >
   obj2.position.z - obj2.geometry.parameters.depth / 2 &&
-  obj1.position.z + obj1.geometry.parameters.depth <= obj2.position.x + obj2.geometry.parameters.depth * 2)
+  obj1.position.z + obj1.geometry.parameters.depth < obj2.position.x + obj2.geometry.parameters.depth * 2)
   
   return withinContactLeftX && withinContactLeftZ
 }
