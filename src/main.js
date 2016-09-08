@@ -14,7 +14,7 @@ function createWindow(name = 'game', width = 960, height = 480, resizable, frame
   
   window.loadURL(`file://${__dirname}/windows/${name}.html`)
   
-  window.webContents.openDevTools()
+  // window.webContents.openDevTools()
   
   window.on('closed', () => {
     window = null

@@ -144,8 +144,34 @@ function init() {
   container.push(stats.dom)
   
   document.addEventListener('keydown', onKeyDown, false)
+  document.addEventListener('wheel', scrollCamera, false)
   
   window.addEventListener('resize', onWindowResize, false)
+}
+
+function scrollCamera(event) {
+  (event.deltaY > 0) ? scrollOut() : scrollIn()
+}
+
+const maxScrollDistanceZ = 1500
+const maxScrollDistanceY = 500
+
+function scrollOut() {
+  if (camera.position.z < player.position.z + maxScrollDistanceZ) {
+    camera.position.z += speed
+  } else if (camera.position.y < maxScrollDistanceY) {
+    camera.position.y += speed
+  }
+}
+
+function scrollIn() {
+  if (camera.position.z > player.position.z) {
+    if (camera.position.y > 0) {
+      camera.position.z -= speed
+      camera.position.y -= speed
+    }
+    camera.position.z -= speed
+  }
 }
 
 function onKeyDown(event) {
@@ -226,7 +252,7 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
