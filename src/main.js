@@ -2,26 +2,37 @@
  * Created by timur on 9/4/16.
  */
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
-let win
 
-function createWindow(name, width, height, resizable) {
+function createWindow(name, width, height, resizable, frame) {
   
-  win = new BrowserWindow({ width, height, resizable })
+  let window = new BrowserWindow({ width, height, resizable, frame })
   
-  win.loadURL(`file://${__dirname}/windows/${name}.html`)
+  window.loadURL(`file://${__dirname}/windows/${name}.html`)
   
-  win.webContents.openDevTools()
+  window.webContents.openDevTools()
   
-  win.on('closed', () => {
-    win = null
+  window.on('closed', () => {
+    window = null
   })
+  
+  return window
 }
 
 app.on('ready', () => {
   
-  createWindow('login', 800, 600, false)
+  createWindow('login', 600, 400, false, true)
+  
+  let signup
+  
+  ipcMain.on('signup', () => {
+    signup = createWindow('signup', 400, 520, false, true)
+  })
+  
+  ipcMain.on('close-signup', () => {
+    signup.close()
+  })
   
   // createWindow('game', 960, 540, false)
 })
