@@ -2,7 +2,7 @@
  * Created by timur on 9/4/16.
  */
 
-import './main.scss'
+import './styles/main.scss'
 
 let scene, camera, renderer, box, player, target
 
@@ -92,6 +92,20 @@ function touchedLeft(obj1, obj2) {
   return withinContactLeftX && withinContactLeftZ
 }
 
+function touchedRight(obj1, obj2) {
+  
+  console.log('x pos 1', obj1.position.x)
+  console.log('x pos 2', obj2.position.x)
+  
+  const withinContactRightX = (obj1.position.x - obj1.geometry.parameters.width * 2 < obj2.position.x + obj2.geometry.parameters.width &&
+  obj1.position.x - obj1.geometry.parameters.width * 2 < obj2.position.x - obj2.geometry.parameters.width / 2)
+  const withinContactRightZ = (obj1.position.z - obj1.geometry.parameters.depth <
+  obj2.position.z + obj2.geometry.parameters.depth * 2 &&
+  obj1.position.z - obj1.geometry.parameters.depth <= obj2.position.x - obj2.geometry.parameters.depth / 2)
+  
+  return withinContactRightX && withinContactRightZ
+}
+
 function init() {
   
   scene = new THREE.Scene()
@@ -152,6 +166,10 @@ function init() {
       
       case 'ArrowLeft':
       case 'a':
+        if (touchedRight(player, box)) {
+          return
+        }
+        
         if (player.position.x > -10500) {
           player.position.x -= speed
           camera.position.x -= speed / 1.05

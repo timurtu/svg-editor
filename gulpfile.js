@@ -2,14 +2,35 @@
  * Created by timur on 9/5/16.
  */
 
+const path = require('path')
 const gulp = require('gulp')
+const babel = require('gulp-babel')
 const Promise = require('bluebird')
 const execAsync = Promise.promisify(require('child_process').exec)
 const rimrafAsync = Promise.promisify(require('rimraf'))
 
-gulp.task('clean', () => rimrafAsync('dist'))
-gulp.task('build', ['clean'], () => execAsync('./node_modules/.bin/webpack'))
-gulp.task('electron', ['clean', 'build'], () => {
-  execAsync('./node_modules/.bin/electron main.js')
-})
-gulp.task('watch', ['build', 'electron'], () => gulp.watch('src/**/*.js', ['build', 'electron']))
+
+const paths = {
+  all: path.join(path.resolve('src'), '**/*'),
+  html: path.join(path.resolve('src'), '**/*.html'),
+  js: path.join(path.resolve('src'), '**/*.js'),
+  dist: path.resolve('dist'),
+  webpack: path.resolve('node_modules/.bin/webpack'),
+  electron: path.resolve('node_modules/.bin/electron'),
+  mainJs: path.resolve('dist/main.js')
+  
+}
+
+gulp.task('clean', () => rimrafAsync(paths.dist))
+
+gulp.task('transpile', ['clean'], () => gulp.src(paths.js).pipe(babel()).pipe(gulp.dest(paths.dist)))
+
+gulp.task('copy-html', ['clean'], () => gulp.src(paths.html).pipe(gulp.dest(paths.dist)))
+
+gulp.task('bundle', ['clean'], () => execAsync(paths.webpack))
+
+gulp.task('build', ['clean', 'transpile', 'copy-html', 'bundle'])
+
+gulp.task('electron', ['clean', 'build'], () => { execAsync(`${paths.electron} ${paths.mainJs}`) })
+
+gulp.task('watch', ['build', 'electron'], () => gulp.watch(paths.all, ['build', 'electron']))
