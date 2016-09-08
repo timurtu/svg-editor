@@ -13,6 +13,7 @@ const rimrafAsync = Promise.promisify(require('rimraf'))
 const paths = {
   all: path.join(path.resolve('src'), '**/*'),
   html: path.join(path.resolve('src'), '**/*.html'),
+  css: path.join(path.resolve('src'), '**/*.css'),
   js: path.join(path.resolve('src'), '**/*.js'),
   dist: path.resolve('dist'),
   webpack: path.resolve('node_modules/.bin/webpack'),
@@ -25,11 +26,11 @@ gulp.task('clean', () => rimrafAsync(paths.dist))
 
 gulp.task('transpile', ['clean'], () => gulp.src(paths.js).pipe(babel()).pipe(gulp.dest(paths.dist)))
 
-gulp.task('copy-html', ['clean'], () => gulp.src(paths.html).pipe(gulp.dest(paths.dist)))
+gulp.task('copy', ['clean'], () => gulp.src([paths.html, paths.css]).pipe(gulp.dest(paths.dist)))
 
 gulp.task('bundle', ['clean'], () => execAsync(paths.webpack))
 
-gulp.task('build', ['clean', 'transpile', 'copy-html', 'bundle'])
+gulp.task('build', ['clean', 'transpile', 'copy', 'bundle'])
 
 gulp.task('electron', ['clean', 'build'], () => { execAsync(`${paths.electron} ${paths.mainJs}`) })
 

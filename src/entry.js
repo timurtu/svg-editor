@@ -2,7 +2,7 @@
  * Created by timur on 9/4/16.
  */
 
-import './styles/main.scss'
+import './styles/game.scss'
 
 let scene, camera, renderer, box, player, target
 

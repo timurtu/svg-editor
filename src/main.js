@@ -23,7 +23,7 @@ app.on('ready', () => {
   
   createWindow('login', 800, 600, false)
   
-  createWindow('game', 960, 540, false)
+  // createWindow('game', 960, 540, false)
 })
 
 app.on('window-all-closed', () => {

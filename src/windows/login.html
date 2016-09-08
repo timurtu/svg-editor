@@ -1,11 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="stylesheet" href="../styles/login.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"/>
+  <title>Log in</title>
 </head>
 <body>
-<h1>Adventure Game Login</h1>
+
+<div class="container-fluid bg-inverse">
+
+  <h1 class="display-3 text-xs-center">Log in</h1>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-3"></div>
+
+    <div class="col-sm-6">
+      <form id="login-form">
+        <label for="username">Username</label>
+        <input id="username" class="form-control" type="text" autofocus="true">
+
+        <label for="password">Password</label>
+        <input id="password" class="form-control" type="text">
+
+        <input id="login-button" type="submit"
+               class="btn btn-outline-primary btn-block" value="Log in">
+      </form>
+    </div>
+
+    <div class="col-sm-3"></div>
+  </div>
+
+  <hr>
+
+  <button id="signup-button" class="btn btn-outline-success">Sign up</button>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/3.3.1/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -17,6 +53,8 @@
   };
   firebase.initializeApp(config);
 </script>
-
+<script>
+  require('../login')
+</script>
 </body>
 </html>
