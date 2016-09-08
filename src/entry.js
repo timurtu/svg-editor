@@ -2,11 +2,19 @@
  * Created by timur on 9/4/16.
  */
 
+import dom from 'domali'
 import './styles/game.scss'
+import { touchedFront } from './game/bounds'
+
+
+const container = dom.create('div')
 
 let scene, camera, renderer, box, player, target
 
-const speed = 100
+let windowHalfX = window.innerWidth / 2
+let windowHalfY = window.innerHeight / 2
+
+const speed = 25
 
 init()
 animate()
@@ -59,6 +67,7 @@ function cube(pos, scene, size, color, dev) {
 }
 
 function building(pos, cubeSize, size, color, dev) {
+  
   const numOfCubes = size / cubeSize
   const cubes = []
   
@@ -73,6 +82,7 @@ function building(pos, cubeSize, size, color, dev) {
 }
 
 function attack(target) {
+  
   if (target) {
     
   } else {
@@ -108,6 +118,8 @@ function touchedRight(obj1, obj2) {
 
 function init() {
   
+  dom.render(container)
+  
   scene = new THREE.Scene()
   
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
@@ -121,20 +133,12 @@ function init() {
   building({ y: -200, x: -2000, z: -2000 }, 200, 2000, 'blue', true)
   road({ y: -350, x: 2000, z: -3000 }, 10000, 500, 'yellow', true)
   
-  const offsetHack = 4
-  
   renderer = new THREE.WebGLRenderer()
+  renderer.setClearColor(0x373A3C)
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(window.innerWidth, window.innerHeight)
   
-  renderer.setSize(
-    window.innerWidth - offsetHack,
-    window.innerHeight - offsetHack
-  )
-  
-  player.onclick = function (event) {
-    console.log(event)
-  }
-  
-  document.body.appendChild(renderer.domElement)
+  container.appendChild(renderer.domElement)
   
   document.addEventListener('keydown', onKeyDown, false)
   
@@ -150,42 +154,54 @@ function init() {
       
       case 'ArrowUp':
       case 'w':
+        
+        if (touchedFront(player, box)) {
+          return
+        }
+        
         if (player.position.z > -10800) {
           player.position.z -= speed
           camera.position.z -= speed / 1.1
         }
+        
         break
       
       case 'ArrowDown':
       case 's':
+        
         if (player.position.z < 3200) {
           player.position.z += speed
           camera.position.z += speed / 1.1
         }
+        
         break
       
       case 'ArrowLeft':
       case 'a':
-        if (touchedRight(player, box)) {
-          return
-        }
+        
+        // if (touchedRight(player, box)) {
+        //   return
+        // }
         
         if (player.position.x > -10500) {
           player.position.x -= speed
           camera.position.x -= speed / 1.05
         }
+        
         break
       
       case 'ArrowRight':
       case 'd':
-        if (touchedLeft(player, box)) {
-          return
-        }
+        
+        // if (touchedLeft(player, box)) {
+        //   return
+        // }
         
         if (player.position.x < 10500) {
           player.position.x += speed
           camera.position.x += speed / 1.05
         }
+        
         break
       
       default:
@@ -194,11 +210,24 @@ function init() {
         console.log('y', player.position.y)
         console.log('z', player.position.z)
     }
-    
   }
+  
+  window.addEventListener('resize', onWindowResize, false)
+}
+
+function onWindowResize() {
+  
+  windowHalfX = window.innerWidth / 2;
+  windowHalfY = window.innerHeight / 2;
+  
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  
+  renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
 function animate() {
+  
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
   camera.lookAt(player)
