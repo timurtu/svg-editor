@@ -1,7 +1,7 @@
 {
-  "name": "adventure-game",
+  "name": "svg-editor",
   "version": "0.0.1",
-  "description": "3D adventure MMORPG for mac/windows/linux.",
+  "description": "Create new SVGs. Edit existing SVGs.",
   "main": "main.js",
   "scripts": {
     "start": "gulp watch",
@@ -22,9 +22,9 @@
   "author": "Timur Uzel <timurt.uzel@gmail.com> (https://github.com/timurtu)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/timurtu/adventure-game/issues"
+    "url": "https://github.com/timurtu/svg-editor/issues"
   },
-  "homepage": "https://github.com/timurtu/adventure-game#readme",
+  "homepage": "https://github.com/timurtu/svg-editor#readme",
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",

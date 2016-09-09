@@ -7,8 +7,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 
 const windows = []
 
-
-function createWindow(name = 'game', width = 960, height = 480, resizable, frame) {
+const createWindow = (name = 'game', width = 960, height = 480, resizable, frame) => {
   
   let window = new BrowserWindow({ width, height, resizable, frame })
   
@@ -25,29 +24,7 @@ function createWindow(name = 'game', width = 960, height = 480, resizable, frame
   return window
 }
 
-app.on('ready', () => {
-  
-  let signup
-  
-  let login = createWindow('login', 600, 400, false, true)
-  
-  windows.push(login)
-  
-  ipcMain.on('signup', () => {
-    
-    signup = createWindow('signup', 400, 520, false, true)
-    windows.push(signup)
-  })
-  
-  ipcMain.on('close-signup', () => signup.close())
-  
-  ipcMain.on('start-game', () => {
-    
-    login.close()
-    windows.push(createWindow('game', 960, 580, true, true))
-  })
-  
-})
+app.on('ready', () => windows.push(createWindow('editor', 600, 400, true, true)))
 
 app.on('window-all-closed', () => {
   
