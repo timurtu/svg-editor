@@ -2,10 +2,10 @@
  * Created by timur on 9/8/16.
  */
 
-import { setPosition } from '../utils'
+import { setPosition } from '../movement'
 
 
-export default function road(pos, length, width, color, dev) {
+const road = (scene, pos, length, width, color, dev) => {
   
   const geometry = new THREE.BoxGeometry(width, 0, length)
   
@@ -18,5 +18,9 @@ export default function road(pos, length, width, color, dev) {
   
   setPosition(pos, obj)
   
+  scene.add(obj)
+  
   return obj
 }
+
+export default road

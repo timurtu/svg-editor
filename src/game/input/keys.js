@@ -2,7 +2,7 @@
  * Created by timur on 9/8/16.
  */
 
-import { move } from '../objects/player'
+import { move } from '../movement'
 
 
 export function onKeyDown(event) {

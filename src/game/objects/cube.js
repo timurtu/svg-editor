@@ -2,10 +2,10 @@
  * Created by timur on 9/8/16.
  */
 
-import { setPosition } from '../utils'
+import { setPosition } from '../movement'
 
 
-export default function cube(pos, size, color, dev) {
+const cube = (scene, pos, size, color, dev) => {
   
   const geometry = new THREE.BoxGeometry(size, size, size)
   
@@ -18,5 +18,9 @@ export default function cube(pos, size, color, dev) {
   
   setPosition(pos, obj)
   
+  scene.add(obj)
+  
   return obj
 }
+
+export default cube
